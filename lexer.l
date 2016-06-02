@@ -19,83 +19,77 @@ user code
 
 
 */
+%option yylineno
+
+%option noinput
+
+%option nounput
 
 %{
-
-        int num_line=1;
-
+	#include <stdio.h>
+	#include "y.tab.h"
+	extern int yylex();
+	extern void yyerror(const char *msg);
 %}
-
-Keywords int|char|return|if|else|while|break|print|read
 
 Number [0-9]+
 
-Idold [a-zA-Z_][a-zA-Z0-9_]*
-
-Identifier (id)[A-Z][a-z]*
-
-Operators \=|\!|\+|\-|\*|\/|\==|\!=|\<|\>|\<=|\>=|\"&&"|\"||"
-
-Special \{|\}|\(|\)|\;|\,|\[|\]
-
-Error [~] 
+Identifier (id)[A-Z][a-z0-9]*
 
 %%
 
 \n {
-	num_line++;
-        printf("Line %d\n",num_line);
+}
+Identifier	{return	ID;}
+
+
+"int"	{return INT;}
+"char"	{return CHAR;}
+"return"	{return RETURN;}
+"if"	{return IF;}
+"else"	{return ELSE;}
+"break"	{return BREAK;}
+"while"	{return WHILE;}
+"print"	{return PRINT;}
+"read"	{return READ;}
+
+"="	{return '=';}
+"!"	{return '!';}
+
+"+"	{return '+';}
+"-"	{return '-';}
+"*"	{return '*';}
+"/"	{return '/';}
+
+"["	{return '[';}
+"]"	{return ']';}
+"("	{return '(';}
+")"	{return ')';}
+"{"	{return '{';}
+"}"	{return '}';}
+";"	{return ';';}
+","	{return ',';}
+
+"=="	{return EQUAL;}
+"!="	{return NOTEQ;}
+"<"	{return SMALL;}
+"<="	{return SMAEQ;}
+">"	{return BIG;}
+">="	{return BIGEQ;}
+"&&"	{return AND;}
+"||"	{return OR;}
+
+Number	{sscanf(yytext,"%d",&yylval);	return NUM;}
+
+
+"//".* {
+	/*consume//-comment*/
 }
 
-{Keywords} {
-
-        printf("	<Keyword>               %s\n",yytext);
-
-}
-
-
-
-{Number} {
-
-        printf("	<Number>                %s\n",yytext );
-
-}
-
-{Identifier} {
-
-        printf("	<Identifier>            %s\n",yytext);
-
-}
-
-{Operators} {
-
-        printf("	<Operator>              %s\n",yytext);
-
-}
-
-{Special} {
-
-        printf("	<Special Symbol>        %s\n",yytext);
-
-}
-
-{Error} {
-
-        printf("	<Error>                 %s\n",yytext);
-
+. {
+	return yytext[0];
 }
 
 %%
 
-main()
-
-{
-
-        printf("Line 1\n");
-
-        yylex();
-
-        return 0;
-
-}
 
