@@ -1,14 +1,48 @@
 %{
+	#include <stdio.h>
+	#include <iostream>
+	#include <string>
+
+	using namespace std;
+
 	extern int yylineno;
 	extern void yyerror(const char *msg);
 	extern int yylex();
 %}
 
+
+%union {
+	int int_val;
+	char *string_val;
+	std::string* str;
+}
+
 %start Program
-%token ID EQUAL NOTEQ BIG BIGEQ SMALL SMAEQ AND OR
-%token INT CHAR
-%token RETURN BREAK WHILE IF ELSE BLOCK PRINT READ
-%token NUM epsilon
+%token <str> ID
+%token <str> EQUAL
+%token <str> NOTEQ
+%token <str> BIG
+%token <str> BIGEQ
+%token <str> SMALL
+%token <str> SMAEQ
+%token <str> AND
+%token <str> OR
+%token <str> INT
+%token <str> CHAR
+%token <str> RETURN
+%token <str> BREAK
+%token <str> WHILE
+%token <str> IF
+%token <str> ELSE
+%token <str> BLOCK
+%token <str> PRINT
+%token <str> READ
+%token <int> NUM
+%token <str> epsilon
+
+
+%type <str>DeclList
+
 
 %%
 
@@ -114,7 +148,7 @@ UnaryOp
 	|'!'
 	;
 BinOp
-	:'+'
+	:'+'	{printf("test");}
 	|'-'
 	|'*'
 	|'/'
@@ -133,3 +167,9 @@ BinOp
 void yyerror(const char *msg){
 	printf("Line %d:error: %s\n", yylineno, msg);
 }
+int yywrap(){return 1;}
+
+int main(int argc,char **argv){
+	return yyparse();
+}
+

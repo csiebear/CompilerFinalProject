@@ -64,11 +64,17 @@
 /* Copy the first part of user declarations.  */
 #line 1 "cfgs.y" /* yacc.c:339  */
 
+	#include <stdio.h>
+	#include <iostream>
+	#include <string>
+
+	using namespace std;
+
 	extern int yylineno;
 	extern void yyerror(const char *msg);
 	extern int yylex();
 
-#line 72 "y.tab.c" /* yacc.c:339  */
+#line 78 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -151,7 +157,17 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE YYSTYPE;
+union YYSTYPE
+{
+#line 14 "cfgs.y" /* yacc.c:355  */
+
+	int int_val;
+	char *string_val;
+	std::string* str;
+
+#line 170 "y.tab.c" /* yacc.c:355  */
+};
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -165,7 +181,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 169 "y.tab.c" /* yacc.c:358  */
+#line 185 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -464,13 +480,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16,    19,    20,    23,    25,    26,    29,    31,
-      32,    34,    37,    38,    41,    42,    45,    47,    48,    51,
-      54,    55,    58,    60,    61,    64,    67,    68,    71,    72,
-      73,    74,    75,    76,    77,    78,    79,    82,    83,    84,
-      85,    88,    89,    90,    91,    94,    95,    98,    99,   102,
-     103,   106,   109,   110,   113,   114,   117,   118,   119,   120,
-     121,   122,   123,   124,   125,   126,   127,   128
+       0,    46,    46,    49,    50,    53,    55,    56,    59,    61,
+      62,    64,    67,    68,    71,    72,    75,    77,    78,    81,
+      84,    85,    88,    90,    91,    94,    97,    98,   101,   102,
+     103,   104,   105,   106,   107,   108,   109,   112,   113,   114,
+     115,   118,   119,   120,   121,   124,   125,   128,   129,   132,
+     133,   136,   139,   140,   143,   144,   147,   148,   149,   150,
+     151,   152,   153,   154,   155,   156,   157,   158
 };
 #endif
 
@@ -1330,8 +1346,14 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
-#line 1335 "y.tab.c" /* yacc.c:1646  */
+        case 56:
+#line 147 "cfgs.y" /* yacc.c:1646  */
+    {printf("test");}
+#line 1353 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1357 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1559,10 +1581,16 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 130 "cfgs.y" /* yacc.c:1906  */
+#line 160 "cfgs.y" /* yacc.c:1906  */
 
 #include <stdio.h>
 
 void yyerror(const char *msg){
 	printf("Line %d:error: %s\n", yylineno, msg);
 }
+int yywrap(){return 1;}
+
+int main(int argc,char **argv){
+	return yyparse();
+}
+
