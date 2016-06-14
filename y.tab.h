@@ -65,7 +65,22 @@ extern int yydebug;
     PRINT = 275,
     READ = 276,
     NUM = 277,
-    epsilon = 278
+    ASSIGN = 278,
+    NOT = 279,
+    PLUS = 280,
+    MINUS = 281,
+    MUL = 282,
+    DIV = 283,
+    LPARE = 284,
+    RPARE = 285,
+    LCHAV = 286,
+    RCHAV = 287,
+    LBRAC = 288,
+    RBRAC = 289,
+    COMMA = 290,
+    DOT = 291,
+    SEMI = 292,
+    epsilon = 293
   };
 #endif
 /* Tokens.  */
@@ -89,7 +104,22 @@ extern int yydebug;
 #define PRINT 275
 #define READ 276
 #define NUM 277
-#define epsilon 278
+#define ASSIGN 278
+#define NOT 279
+#define PLUS 280
+#define MINUS 281
+#define MUL 282
+#define DIV 283
+#define LPARE 284
+#define RPARE 285
+#define LCHAV 286
+#define RCHAV 287
+#define LBRAC 288
+#define RBRAC 289
+#define COMMA 290
+#define DOT 291
+#define SEMI 292
+#define epsilon 293
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -102,7 +132,7 @@ union YYSTYPE
 	char *string_val;
 	std::string* str;
 
-#line 106 "y.tab.h" /* yacc.c:1909  */
+#line 136 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
