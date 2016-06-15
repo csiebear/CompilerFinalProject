@@ -1,8 +1,6 @@
 %{
 	#include <stdio.h>
 	#include <iostream>
-	#include <string>
-
 	using namespace std;
 
 	extern int yylineno;
@@ -13,8 +11,7 @@
 
 %union {
 	int int_val;
-	char *string_val;
-	std::string* str;
+	char *str;
 }
 %token <str> ID
 %token <str> EQUAL
@@ -34,7 +31,7 @@
 %token <str> ELSE
 %token <str> PRINT
 %token <str> READ
-%token <str> NUM
+%token <int_val> NUM
 %token <str> ASSIGN
 %token <str> NOT
 %token <str> PLUS
@@ -50,8 +47,6 @@
 %token <str> COMMA
 %token <str> DOT
 %token <str> SEMI
-
-%token <str> epsilon
 
 
 %type <str> Program
@@ -89,45 +84,49 @@ Program
 	;
 DeclList
 	:DeclList2 DeclList
-	|epsilon
+	|/*empyt*/{}
 	;
 DeclList2
-	:Type ID Decl
+	:Type ID Decl{printf("%s\n",$2);}
 Decl
 	:VarDecl2
 	|FunDecl
 	;
 VarDecl
 	:Type ID VarDecl2
+	;
 VarDecl2
 	:SEMI
-	|LCHAV NUM RCHAV SEMI
+	| LCHAV NUM RCHAV SEMI{cout<<$2<<endl;}
+	;
 FunDecl
 	:LPARE ParamDeclList RPARE Block
 	;
 VarDeclList
 	:VarDecl VarDeclList
-	|epsilon
+	|/*empty*/{}
 	;
 ParamDeclList
 	:ParamDeclListTail
-	|epsilon
+	|/*empty*/{}
 	;
 ParamDeclListTail
 	:ParamDecl ParamDeclListTail2
+	;
 ParamDeclListTail2
 	:COMMA ParamDeclListTail
-	|epsilon
+	|/*empty*/{}
 	;
 ParamDecl
 	:Type ID ParamDecl2
 	;
 ParamDecl2
 	:LCHAV RCHAV
-	|epsilon
+	|/*empty*/{}
 	;
 Block
 	:LBRAC VarDeclList StmtList RBRAC
+	;
 Type
 	:INT
 	|CHAR
@@ -137,7 +136,7 @@ StmtList
 	;
 StmtList2
 	:StmtList
-	|epsilon
+	|/*empty*/{}
 	;
 Stmt
 	:SEMI
@@ -152,7 +151,7 @@ Stmt
 	;
 Expr
 	:UnaryOp Expr
-	|NUM Expr2
+	|NUM Expr2{}
 	|LPARE Expr RPARE Expr2
 	|ID ExprIdTail
 	;
@@ -168,34 +167,34 @@ ExprArrayTail
 	;
 Expr2
 	:BinOp Expr
-	|epsilon
+	|/*empty*/{}
 	;
 ExprList
 	:ExprListTail
-	|epsilon
+	|/*empty*/{}
 	;
 ExprListTail
 	:Expr ExprListTail2
 	;
 ExprListTail2
 	:COMMA ExprListTail
-	|epsilon
+	|/*empty*/{}
 	;
 UnaryOp
 	:MINUS
 	|NOT
 	;
 BinOp
-	:PLUS
-	|MINUS
-	|MUL
-	|DIV
-	|EQUAL
-	|NOTEQ
-	|SMALL
-	|SMAEQ
-	|BIG
-	|BIGEQ
+	:PLUS{cout<<"add"<<endl;}
+	|MINUS{cout<<"sub"<<endl;}
+	|MUL{cout<<"mul"<<endl;}
+	|DIV{cout<<"div"<<endl;}
+	|EQUAL{cout<<"seq"<<endl;}
+	|NOTEQ{cout<<"sne"<<endl;}
+	|SMALL{cout<<"slt"<<endl;}
+	|SMAEQ{cout<<"sle"<<endl;}
+	|BIG{cout<<"sgt"<<endl;}
+	|BIGEQ{cout<<"sge"<<endl;}
 	|AND
 	|OR
 	;
@@ -208,6 +207,9 @@ void yyerror(const char *msg){
 int yywrap(){return 1;}
 
 int main(int argc,char **argv){
+	printf("	.text\n");
+	printf("	.global main\n");
+	printf("main:\n");
 	return yyparse();
 }
 

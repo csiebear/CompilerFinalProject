@@ -27,67 +27,65 @@ user code
 %{
 	#include <stdio.h>
 	#include <iostream>
-	#include <string>
 	#include "y.tab.h"
-
+	
 	extern int yylineno;
 	extern void yyerror(const char *msg);
-%}
 
-Number [0-9]+
+%}
+DIGIT [0-9]
+NOTZERO [1-9]
+Number {NOTZERO}*{DIGIT}+
 
 Identifier (id)[A-Z][a-z0-9]*
 
 %%
 [ \t]*	{}
-[\n]	{	yylineno++;}
-{Identifier}	{yylval.str = new std::string(yytext);return ID;}
+[\n]	{}
+{Identifier}	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return ID;}
+{Number}	{yylval.int_val = atoi(yytext); return NUM;}
 
 
-int	{yylval.str=new std::string(yytext);return INT;}
-char	{yylval.str = new std::string(yytext);return CHAR;}
-return	{yylval.str = new std::string(yytext);return RETURN;}
-if	{yylval.str = new std::string(yytext);return IF;}
-else	{yylval.str = new std::string(yytext);return ELSE;}
-break	{yylval.str = new std::string(yytext);return BREAK;}
-while	{yylval.str = new std::string(yytext);return WHILE;}
-print	{yylval.str = new std::string(yytext);return PRINT;}
-read	{yylval.str = new std::string(yytext);return READ;}
+int	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return INT;}
+char	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return CHAR;}
+return	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return RETURN;}
+if	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return IF;}
+else	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return ELSE;}
+break	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return BREAK;}
+while	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return WHILE;}
+print	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return PRINT;}
+read	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return READ;}
 
-"="	{yylval.str = new std::string(yytext);return ASSIGN;}
-"!"	{yylval.str = new std::string(yytext);return NOT;}
+"="	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return ASSIGN;}
+"!"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return NOT;}
 
-"+"	{yylval.str = new std::string(yytext);return PLUS;}
-"-"	{yylval.str = new std::string(yytext);return MINUS;}
-"*"	{yylval.str = new std::string(yytext);return MUL;}
-"/"	{yylval.str = new std::string(yytext);return DIV;}
+"+"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return PLUS;}
+"-"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return MINUS;}
+"*"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return MUL;}
+"/"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return DIV;}
 
-"["	{yylval.str = new std::string(yytext);return LCHAV;}
-"]"	{yylval.str = new std::string(yytext);return RCHAV;}
-"("	{yylval.str = new std::string(yytext);return LPARE;}
-")"	{yylval.str = new std::string(yytext);return RPARE;}
-"{"	{yylval.str = new std::string(yytext);return LBRAC;}
-"}"	{yylval.str = new std::string(yytext);return RBRAC;}
-";"	{yylval.str = new std::string(yytext);return SEMI;}
-","	{yylval.str = new std::string(yytext);return COMMA;}
+"["	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return LCHAV;}
+"]"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return RCHAV;}
+"("	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return LPARE;}
+")"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return RPARE;}
+"{"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return LBRAC;}
+"}"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return RBRAC;}
+";"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return SEMI;}
+","	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return COMMA;}
 
-"=="	{yylval.str = new std::string(yytext);return EQUAL;}
-"!="	{yylval.str = new std::string(yytext);return NOTEQ;}
-"<"	{yylval.str = new std::string(yytext);return SMALL;}
-"<="	{yylval.str = new std::string(yytext);return SMAEQ;}
-">"	{yylval.str = new std::string(yytext);return BIG;}
-">="	{yylval.str = new std::string(yytext);return BIGEQ;}
-"&&"	{yylval.str = new std::string(yytext);return AND;}
-"||"	{yylval.str = new std::string(yytext);return OR;}
-
-Number	{yylval.str = new std::string(yytext); return NUM;}
-
+"=="	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return EQUAL;}
+"!="	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return NOTEQ;}
+"<"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return SMALL;}
+"<="	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return SMAEQ;}
+">"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return BIG;}
+">="	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return BIGEQ;}
+"&&"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return AND;}
+"||"	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return OR;}
 
 "//".* {
 }
 
 . {
-	return yytext[0];
 }
 
 %%

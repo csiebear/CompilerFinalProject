@@ -61,26 +61,24 @@ extern int yydebug;
     WHILE = 271,
     IF = 272,
     ELSE = 273,
-    BLOCK = 274,
-    PRINT = 275,
-    READ = 276,
-    NUM = 277,
-    ASSIGN = 278,
-    NOT = 279,
-    PLUS = 280,
-    MINUS = 281,
-    MUL = 282,
-    DIV = 283,
-    LPARE = 284,
-    RPARE = 285,
-    LCHAV = 286,
-    RCHAV = 287,
-    LBRAC = 288,
-    RBRAC = 289,
-    COMMA = 290,
-    DOT = 291,
-    SEMI = 292,
-    epsilon = 293
+    PRINT = 274,
+    READ = 275,
+    NUM = 276,
+    ASSIGN = 277,
+    NOT = 278,
+    PLUS = 279,
+    MINUS = 280,
+    MUL = 281,
+    DIV = 282,
+    LPARE = 283,
+    RPARE = 284,
+    LCHAV = 285,
+    RCHAV = 286,
+    LBRAC = 287,
+    RBRAC = 288,
+    COMMA = 289,
+    DOT = 290,
+    SEMI = 291
   };
 #endif
 /* Tokens.  */
@@ -100,39 +98,36 @@ extern int yydebug;
 #define WHILE 271
 #define IF 272
 #define ELSE 273
-#define BLOCK 274
-#define PRINT 275
-#define READ 276
-#define NUM 277
-#define ASSIGN 278
-#define NOT 279
-#define PLUS 280
-#define MINUS 281
-#define MUL 282
-#define DIV 283
-#define LPARE 284
-#define RPARE 285
-#define LCHAV 286
-#define RCHAV 287
-#define LBRAC 288
-#define RBRAC 289
-#define COMMA 290
-#define DOT 291
-#define SEMI 292
-#define epsilon 293
+#define PRINT 274
+#define READ 275
+#define NUM 276
+#define ASSIGN 277
+#define NOT 278
+#define PLUS 279
+#define MINUS 280
+#define MUL 281
+#define DIV 282
+#define LPARE 283
+#define RPARE 284
+#define LCHAV 285
+#define RCHAV 286
+#define LBRAC 287
+#define RBRAC 288
+#define COMMA 289
+#define DOT 290
+#define SEMI 291
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 14 "cfgs.y" /* yacc.c:1909  */
+#line 12 "cfgs.y" /* yacc.c:1909  */
 
 	int int_val;
-	char *string_val;
-	std::string* str;
+	char *str;
 
-#line 136 "y.tab.h" /* yacc.c:1909  */
+#line 131 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
