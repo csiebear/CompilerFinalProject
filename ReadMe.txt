@@ -36,3 +36,7 @@ Nonterminals:
 	VarDeclList...and so on
 
 Now we should modify the lexer based on the terminals definition.
+
+The file name lexer_test2.l is used to test the lexer is correct or not.
+(flex lexer_test2.l	g++ lex.yy.c -ll	./a.out <test.c >lexerresult
+

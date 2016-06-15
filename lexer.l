@@ -39,10 +39,9 @@ Number [0-9]+
 Identifier (id)[A-Z][a-z0-9]*
 
 %%
-[ ]	{}
 [ \t]*	{}
 [\n]	{	yylineno++;}
-Identifier	{yylval.str = new std::string(yytext);return ID;}
+{Identifier}	{yylval.str = new std::string(yytext);return ID;}
 
 
 int	{yylval.str=new std::string(yytext);return INT;}
@@ -81,11 +80,10 @@ read	{yylval.str = new std::string(yytext);return READ;}
 "&&"	{yylval.str = new std::string(yytext);return AND;}
 "||"	{yylval.str = new std::string(yytext);return OR;}
 
-Number	{yylval.int_val = atoi(yytext); return NUM;}
+Number	{yylval.str = new std::string(yytext); return NUM;}
 
 
 "//".* {
-	/*consume//-comment*/
 }
 
 . {

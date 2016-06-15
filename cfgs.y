@@ -16,8 +16,6 @@
 	char *string_val;
 	std::string* str;
 }
-
-%start Program
 %token <str> ID
 %token <str> EQUAL
 %token <str> NOTEQ
@@ -34,10 +32,9 @@
 %token <str> WHILE
 %token <str> IF
 %token <str> ELSE
-%token <str> BLOCK
 %token <str> PRINT
 %token <str> READ
-%token <int> NUM
+%token <str> NUM
 %token <str> ASSIGN
 %token <str> NOT
 %token <str> PLUS
@@ -83,6 +80,7 @@
 %type <str> ExprListTail2
 %type <str> UnaryOp
 %type <str> BinOp
+%type <str> Block
 
 %%
 
@@ -148,7 +146,7 @@ Stmt
 	|BREAK SEMI
 	|IF LPARE Expr RPARE Stmt ELSE Stmt
 	|WHILE LPARE Expr RPARE Stmt
-	|BLOCK
+	|Block
 	|PRINT ID SEMI 
 	|READ ID SEMI
 	;
