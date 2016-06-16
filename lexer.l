@@ -43,7 +43,7 @@ Identifier (id)[A-Z][a-z0-9]*
 [ \t]*	{}
 [\n]	{}
 {Identifier}	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return ID;}
-{Number}	{yylval.int_val = atoi(yytext); return NUM;}
+{Number}	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return NUM;}
 
 
 int	{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return INT;}

@@ -61,59 +61,59 @@
    35     | READ ID SEMI
 
    36 Expr: UnaryOp Expr
-   37     | NUM Expr2
-   38     | LPARE Expr RPARE Expr2
-   39     | ID ExprIdTail
+   37     | NUM
+   38     | NUM BinOp Expr
+   39     | LPARE Expr RPARE
+   40     | LPARE Expr RPARE BinOp Expr
+   41     | ID
+   42     | ID BinOp Expr
+   43     | ID LPARE ExprList RPARE
+   44     | ID LPARE ExprList RPARE BinOp Expr
+   45     | ID LCHAV Expr RCHAV ExprArrayTail
+   46     | ID ASSIGN Expr
 
-   40 ExprIdTail: Expr2
-   41           | LPARE ExprList RPARE Expr2
-   42           | LCHAV Expr RCHAV ExprArrayTail
-   43           | ASSIGN Expr
+   47 ExprArrayTail: BinOp Expr
+   48              | %empty
+   49              | ASSIGN Expr
 
-   44 ExprArrayTail: Expr2
-   45              | ASSIGN Expr
+   50 ExprList: ExprListTail
+   51         | %empty
 
-   46 Expr2: BinOp Expr
-   47      | %empty
+   52 ExprListTail: Expr ExprListTail2
 
-   48 ExprList: ExprListTail
-   49         | %empty
+   53 ExprListTail2: COMMA ExprListTail
+   54              | %empty
 
-   50 ExprListTail: Expr ExprListTail2
+   55 UnaryOp: MINUS
+   56        | NOT
 
-   51 ExprListTail2: COMMA ExprListTail
-   52              | %empty
-
-   53 UnaryOp: MINUS
-   54        | NOT
-
-   55 BinOp: PLUS
-   56      | MINUS
-   57      | MUL
-   58      | DIV
-   59      | EQUAL
-   60      | NOTEQ
-   61      | SMALL
-   62      | SMAEQ
-   63      | BIG
-   64      | BIGEQ
-   65      | AND
-   66      | OR
+   57 BinOp: PLUS
+   58      | MINUS
+   59      | MUL
+   60      | DIV
+   61      | EQUAL
+   62      | NOTEQ
+   63      | SMALL
+   64      | SMAEQ
+   65      | BIG
+   66      | BIGEQ
+   67      | AND
+   68      | OR
 
 
 終結語詞，附有它們出現處的規則
 
 $end (0) 0
 error (256)
-ID (258) 4 7 18 34 35 39
-EQUAL (259) 59
-NOTEQ (260) 60
-BIG (261) 63
-BIGEQ (262) 64
-SMALL (263) 61
-SMAEQ (264) 62
-AND (265) 65
-OR (266) 66
+ID (258) 4 7 18 34 35 41 42 43 44 45 46
+EQUAL (259) 61
+NOTEQ (260) 62
+BIG (261) 65
+BIGEQ (262) 66
+SMALL (263) 63
+SMAEQ (264) 64
+AND (265) 67
+OR (266) 68
 INT (267) 22
 CHAR (268) 23
 RETURN (269) 29
@@ -123,20 +123,20 @@ IF (272) 31
 ELSE (273) 31
 PRINT (274) 34
 READ (275) 35
-NUM (276) 9 37
-ASSIGN (277) 43 45
-NOT (278) 54
-PLUS (279) 55
-MINUS (280) 53 56
-MUL (281) 57
-DIV (282) 58
-LPARE (283) 10 31 32 38 41
-RPARE (284) 10 31 32 38 41
-LCHAV (285) 9 19 42
-RCHAV (286) 9 19 42
+NUM (276) 9 37 38
+ASSIGN (277) 46 49
+NOT (278) 56
+PLUS (279) 57
+MINUS (280) 55 58
+MUL (281) 59
+DIV (282) 60
+LPARE (283) 10 31 32 39 40 43 44
+RPARE (284) 10 31 32 39 40 43 44
+LCHAV (285) 9 19 45
+RCHAV (286) 9 19 45
 LBRAC (287) 21
 RBRAC (288) 21
-COMMA (289) 16 51
+COMMA (289) 16 53
 DOT (290)
 SEMI (291) 8 9 27 28 29 30 34 35
 
@@ -182,25 +182,21 @@ StmtList2 (54)
 Stmt (55)
     於左側： 27 28 29 30 31 32 33 34 35, 於右側： 24 31 32
 Expr (56)
-    於左側： 36 37 38 39, 於右側： 28 29 31 32 36 38 42 43
-    45 46 50
-ExprIdTail (57)
-    於左側： 40 41 42 43, 於右側： 39
-ExprArrayTail (58)
-    於左側： 44 45, 於右側： 42
-Expr2 (59)
-    於左側： 46 47, 於右側： 37 38 40 41 44
-ExprList (60)
-    於左側： 48 49, 於右側： 41
-ExprListTail (61)
-    於左側： 50, 於右側： 48 51
-ExprListTail2 (62)
-    於左側： 51 52, 於右側： 50
-UnaryOp (63)
-    於左側： 53 54, 於右側： 36
-BinOp (64)
-    於左側： 55 56 57 58 59 60 61 62 63 64 65 66, 於右側：
-    46
+    於左側： 36 37 38 39 40 41 42 43 44 45 46, 於右側： 28
+    29 31 32 36 38 39 40 42 44 45 46 47 49 52
+ExprArrayTail (57)
+    於左側： 47 48 49, 於右側： 45
+ExprList (58)
+    於左側： 50 51, 於右側： 43 44
+ExprListTail (59)
+    於左側： 52, 於右側： 50 53
+ExprListTail2 (60)
+    於左側： 53 54, 於右側： 52
+UnaryOp (61)
+    於左側： 55 56, 於右側： 36
+BinOp (62)
+    於左側： 57 58 59 60 61 62 63 64 65 66 67 68, 於右側：
+    38 40 42 44 47
 
 
 狀態 0
@@ -540,7 +536,12 @@ BinOp (64)
 
 狀態 37
 
-   39 Expr: ID . ExprIdTail
+   41 Expr: ID .
+   42     | ID . BinOp Expr
+   43     | ID . LPARE ExprList RPARE
+   44     | ID . LPARE ExprList RPARE BinOp Expr
+   45     | ID . LCHAV Expr RCHAV ExprArrayTail
+   46     | ID . ASSIGN Expr
 
     EQUAL   偏移，並進入狀態 55
     NOTEQ   偏移，並進入狀態 56
@@ -558,11 +559,9 @@ BinOp (64)
     LPARE   偏移，並進入狀態 68
     LCHAV   偏移，並進入狀態 69
 
-    $預設  使用規則 47 以縮減 (Expr2)
+    $預設  使用規則 41 以縮減 (Expr)
 
-    ExprIdTail  進入狀態 70
-    Expr2       進入狀態 71
-    BinOp       進入狀態 72
+    BinOp  進入狀態 70
 
 
 狀態 38
@@ -575,7 +574,7 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 73
+    Expr     進入狀態 71
     UnaryOp  進入狀態 53
 
 
@@ -583,40 +582,41 @@ BinOp (64)
 
    30 Stmt: BREAK . SEMI
 
-    SEMI  偏移，並進入狀態 74
+    SEMI  偏移，並進入狀態 72
 
 
 狀態 40
 
    32 Stmt: WHILE . LPARE Expr RPARE Stmt
 
-    LPARE  偏移，並進入狀態 75
+    LPARE  偏移，並進入狀態 73
 
 
 狀態 41
 
    31 Stmt: IF . LPARE Expr RPARE Stmt ELSE Stmt
 
-    LPARE  偏移，並進入狀態 76
+    LPARE  偏移，並進入狀態 74
 
 
 狀態 42
 
    34 Stmt: PRINT . ID SEMI
 
-    ID  偏移，並進入狀態 77
+    ID  偏移，並進入狀態 75
 
 
 狀態 43
 
    35 Stmt: READ . ID SEMI
 
-    ID  偏移，並進入狀態 78
+    ID  偏移，並進入狀態 76
 
 
 狀態 44
 
-   37 Expr: NUM . Expr2
+   37 Expr: NUM .
+   38     | NUM . BinOp Expr
 
     EQUAL  偏移，並進入狀態 55
     NOTEQ  偏移，並進入狀態 56
@@ -631,29 +631,29 @@ BinOp (64)
     MUL    偏移，並進入狀態 66
     DIV    偏移，並進入狀態 67
 
-    $預設  使用規則 47 以縮減 (Expr2)
+    $預設  使用規則 37 以縮減 (Expr)
 
-    Expr2  進入狀態 79
-    BinOp  進入狀態 72
+    BinOp  進入狀態 77
 
 
 狀態 45
 
-   54 UnaryOp: NOT .
+   56 UnaryOp: NOT .
 
-    $預設  使用規則 54 以縮減 (UnaryOp)
+    $預設  使用規則 56 以縮減 (UnaryOp)
 
 
 狀態 46
 
-   53 UnaryOp: MINUS .
+   55 UnaryOp: MINUS .
 
-    $預設  使用規則 53 以縮減 (UnaryOp)
+    $預設  使用規則 55 以縮減 (UnaryOp)
 
 
 狀態 47
 
-   38 Expr: LPARE . Expr RPARE Expr2
+   39 Expr: LPARE . Expr RPARE
+   40     | LPARE . Expr RPARE BinOp Expr
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -661,7 +661,7 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 80
+    Expr     進入狀態 78
     UnaryOp  進入狀態 53
 
 
@@ -683,7 +683,7 @@ BinOp (64)
 
    21 Block: LBRAC VarDeclList StmtList . RBRAC
 
-    RBRAC  偏移，並進入狀態 81
+    RBRAC  偏移，並進入狀態 79
 
 
 狀態 51
@@ -707,8 +707,8 @@ BinOp (64)
     $預設  使用規則 26 以縮減 (StmtList2)
 
     Block      進入狀態 49
-    StmtList   進入狀態 82
-    StmtList2  進入狀態 83
+    StmtList   進入狀態 80
+    StmtList2  進入狀態 81
     Stmt       進入狀態 51
     Expr       進入狀態 52
     UnaryOp    進入狀態 53
@@ -718,7 +718,7 @@ BinOp (64)
 
    28 Stmt: Expr . SEMI
 
-    SEMI  偏移，並進入狀態 84
+    SEMI  偏移，並進入狀態 82
 
 
 狀態 53
@@ -731,7 +731,7 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 85
+    Expr     進入狀態 83
     UnaryOp  進入狀態 53
 
 
@@ -742,68 +742,68 @@ BinOp (64)
     LCHAV  偏移，並進入狀態 11
     SEMI   偏移，並進入狀態 12
 
-    VarDecl2  進入狀態 86
+    VarDecl2  進入狀態 84
 
 
 狀態 55
 
-   59 BinOp: EQUAL .
-
-    $預設  使用規則 59 以縮減 (BinOp)
-
-
-狀態 56
-
-   60 BinOp: NOTEQ .
-
-    $預設  使用規則 60 以縮減 (BinOp)
-
-
-狀態 57
-
-   63 BinOp: BIG .
-
-    $預設  使用規則 63 以縮減 (BinOp)
-
-
-狀態 58
-
-   64 BinOp: BIGEQ .
-
-    $預設  使用規則 64 以縮減 (BinOp)
-
-
-狀態 59
-
-   61 BinOp: SMALL .
+   61 BinOp: EQUAL .
 
     $預設  使用規則 61 以縮減 (BinOp)
 
 
-狀態 60
+狀態 56
 
-   62 BinOp: SMAEQ .
+   62 BinOp: NOTEQ .
 
     $預設  使用規則 62 以縮減 (BinOp)
 
 
-狀態 61
+狀態 57
 
-   65 BinOp: AND .
+   65 BinOp: BIG .
 
     $預設  使用規則 65 以縮減 (BinOp)
 
 
-狀態 62
+狀態 58
 
-   66 BinOp: OR .
+   66 BinOp: BIGEQ .
 
     $預設  使用規則 66 以縮減 (BinOp)
 
 
+狀態 59
+
+   63 BinOp: SMALL .
+
+    $預設  使用規則 63 以縮減 (BinOp)
+
+
+狀態 60
+
+   64 BinOp: SMAEQ .
+
+    $預設  使用規則 64 以縮減 (BinOp)
+
+
+狀態 61
+
+   67 BinOp: AND .
+
+    $預設  使用規則 67 以縮減 (BinOp)
+
+
+狀態 62
+
+   68 BinOp: OR .
+
+    $預設  使用規則 68 以縮減 (BinOp)
+
+
 狀態 63
 
-   43 ExprIdTail: ASSIGN . Expr
+   46 Expr: ID ASSIGN . Expr
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -811,41 +811,42 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 87
+    Expr     進入狀態 85
     UnaryOp  進入狀態 53
 
 
 狀態 64
 
-   55 BinOp: PLUS .
-
-    $預設  使用規則 55 以縮減 (BinOp)
-
-
-狀態 65
-
-   56 BinOp: MINUS .
-
-    $預設  使用規則 56 以縮減 (BinOp)
-
-
-狀態 66
-
-   57 BinOp: MUL .
+   57 BinOp: PLUS .
 
     $預設  使用規則 57 以縮減 (BinOp)
 
 
-狀態 67
+狀態 65
 
-   58 BinOp: DIV .
+   58 BinOp: MINUS .
 
     $預設  使用規則 58 以縮減 (BinOp)
 
 
+狀態 66
+
+   59 BinOp: MUL .
+
+    $預設  使用規則 59 以縮減 (BinOp)
+
+
+狀態 67
+
+   60 BinOp: DIV .
+
+    $預設  使用規則 60 以縮減 (BinOp)
+
+
 狀態 68
 
-   41 ExprIdTail: LPARE . ExprList RPARE Expr2
+   43 Expr: ID LPARE . ExprList RPARE
+   44     | ID LPARE . ExprList RPARE BinOp Expr
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -853,17 +854,17 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    $預設  使用規則 49 以縮減 (ExprList)
+    $預設  使用規則 51 以縮減 (ExprList)
 
-    Expr          進入狀態 88
-    ExprList      進入狀態 89
-    ExprListTail  進入狀態 90
+    Expr          進入狀態 86
+    ExprList      進入狀態 87
+    ExprListTail  進入狀態 88
     UnaryOp       進入狀態 53
 
 
 狀態 69
 
-   42 ExprIdTail: LCHAV . Expr RCHAV ExprArrayTail
+   45 Expr: ID LCHAV . Expr RCHAV ExprArrayTail
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -871,27 +872,41 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 91
+    Expr     進入狀態 89
     UnaryOp  進入狀態 53
 
 
 狀態 70
 
-   39 Expr: ID ExprIdTail .
+   42 Expr: ID BinOp . Expr
 
-    $預設  使用規則 39 以縮減 (Expr)
+    ID     偏移，並進入狀態 37
+    NUM    偏移，並進入狀態 44
+    NOT    偏移，並進入狀態 45
+    MINUS  偏移，並進入狀態 46
+    LPARE  偏移，並進入狀態 47
+
+    Expr     進入狀態 90
+    UnaryOp  進入狀態 53
 
 
 狀態 71
 
-   40 ExprIdTail: Expr2 .
+   29 Stmt: RETURN Expr . SEMI
 
-    $預設  使用規則 40 以縮減 (ExprIdTail)
+    SEMI  偏移，並進入狀態 91
 
 
 狀態 72
 
-   46 Expr2: BinOp . Expr
+   30 Stmt: BREAK SEMI .
+
+    $預設  使用規則 30 以縮減 (Stmt)
+
+
+狀態 73
+
+   32 Stmt: WHILE LPARE . Expr RPARE Stmt
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -903,35 +918,7 @@ BinOp (64)
     UnaryOp  進入狀態 53
 
 
-狀態 73
-
-   29 Stmt: RETURN Expr . SEMI
-
-    SEMI  偏移，並進入狀態 93
-
-
 狀態 74
-
-   30 Stmt: BREAK SEMI .
-
-    $預設  使用規則 30 以縮減 (Stmt)
-
-
-狀態 75
-
-   32 Stmt: WHILE LPARE . Expr RPARE Stmt
-
-    ID     偏移，並進入狀態 37
-    NUM    偏移，並進入狀態 44
-    NOT    偏移，並進入狀態 45
-    MINUS  偏移，並進入狀態 46
-    LPARE  偏移，並進入狀態 47
-
-    Expr     進入狀態 94
-    UnaryOp  進入狀態 53
-
-
-狀態 76
 
    31 Stmt: IF LPARE . Expr RPARE Stmt ELSE Stmt
 
@@ -941,187 +928,27 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr     進入狀態 95
+    Expr     進入狀態 93
     UnaryOp  進入狀態 53
+
+
+狀態 75
+
+   34 Stmt: PRINT ID . SEMI
+
+    SEMI  偏移，並進入狀態 94
+
+
+狀態 76
+
+   35 Stmt: READ ID . SEMI
+
+    SEMI  偏移，並進入狀態 95
 
 
 狀態 77
 
-   34 Stmt: PRINT ID . SEMI
-
-    SEMI  偏移，並進入狀態 96
-
-
-狀態 78
-
-   35 Stmt: READ ID . SEMI
-
-    SEMI  偏移，並進入狀態 97
-
-
-狀態 79
-
-   37 Expr: NUM Expr2 .
-
-    $預設  使用規則 37 以縮減 (Expr)
-
-
-狀態 80
-
-   38 Expr: LPARE Expr . RPARE Expr2
-
-    RPARE  偏移，並進入狀態 98
-
-
-狀態 81
-
-   21 Block: LBRAC VarDeclList StmtList RBRAC .
-
-    $預設  使用規則 21 以縮減 (Block)
-
-
-狀態 82
-
-   25 StmtList2: StmtList .
-
-    $預設  使用規則 25 以縮減 (StmtList2)
-
-
-狀態 83
-
-   24 StmtList: Stmt StmtList2 .
-
-    $預設  使用規則 24 以縮減 (StmtList)
-
-
-狀態 84
-
-   28 Stmt: Expr SEMI .
-
-    $預設  使用規則 28 以縮減 (Stmt)
-
-
-狀態 85
-
-   36 Expr: UnaryOp Expr .
-
-    $預設  使用規則 36 以縮減 (Expr)
-
-
-狀態 86
-
-    7 VarDecl: Type ID VarDecl2 .
-
-    $預設  使用規則 7 以縮減 (VarDecl)
-
-
-狀態 87
-
-   43 ExprIdTail: ASSIGN Expr .
-
-    $預設  使用規則 43 以縮減 (ExprIdTail)
-
-
-狀態 88
-
-   50 ExprListTail: Expr . ExprListTail2
-
-    COMMA  偏移，並進入狀態 99
-
-    $預設  使用規則 52 以縮減 (ExprListTail2)
-
-    ExprListTail2  進入狀態 100
-
-
-狀態 89
-
-   41 ExprIdTail: LPARE ExprList . RPARE Expr2
-
-    RPARE  偏移，並進入狀態 101
-
-
-狀態 90
-
-   48 ExprList: ExprListTail .
-
-    $預設  使用規則 48 以縮減 (ExprList)
-
-
-狀態 91
-
-   42 ExprIdTail: LCHAV Expr . RCHAV ExprArrayTail
-
-    RCHAV  偏移，並進入狀態 102
-
-
-狀態 92
-
-   46 Expr2: BinOp Expr .
-
-    $預設  使用規則 46 以縮減 (Expr2)
-
-
-狀態 93
-
-   29 Stmt: RETURN Expr SEMI .
-
-    $預設  使用規則 29 以縮減 (Stmt)
-
-
-狀態 94
-
-   32 Stmt: WHILE LPARE Expr . RPARE Stmt
-
-    RPARE  偏移，並進入狀態 103
-
-
-狀態 95
-
-   31 Stmt: IF LPARE Expr . RPARE Stmt ELSE Stmt
-
-    RPARE  偏移，並進入狀態 104
-
-
-狀態 96
-
-   34 Stmt: PRINT ID SEMI .
-
-    $預設  使用規則 34 以縮減 (Stmt)
-
-
-狀態 97
-
-   35 Stmt: READ ID SEMI .
-
-    $預設  使用規則 35 以縮減 (Stmt)
-
-
-狀態 98
-
-   38 Expr: LPARE Expr RPARE . Expr2
-
-    EQUAL  偏移，並進入狀態 55
-    NOTEQ  偏移，並進入狀態 56
-    BIG    偏移，並進入狀態 57
-    BIGEQ  偏移，並進入狀態 58
-    SMALL  偏移，並進入狀態 59
-    SMAEQ  偏移，並進入狀態 60
-    AND    偏移，並進入狀態 61
-    OR     偏移，並進入狀態 62
-    PLUS   偏移，並進入狀態 64
-    MINUS  偏移，並進入狀態 65
-    MUL    偏移，並進入狀態 66
-    DIV    偏移，並進入狀態 67
-
-    $預設  使用規則 47 以縮減 (Expr2)
-
-    Expr2  進入狀態 105
-    BinOp  進入狀態 72
-
-
-狀態 99
-
-   51 ExprListTail2: COMMA . ExprListTail
+   38 Expr: NUM BinOp . Expr
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -1129,21 +956,153 @@ BinOp (64)
     MINUS  偏移，並進入狀態 46
     LPARE  偏移，並進入狀態 47
 
-    Expr          進入狀態 88
-    ExprListTail  進入狀態 106
-    UnaryOp       進入狀態 53
+    Expr     進入狀態 96
+    UnaryOp  進入狀態 53
 
 
-狀態 100
+狀態 78
 
-   50 ExprListTail: Expr ExprListTail2 .
+   39 Expr: LPARE Expr . RPARE
+   40     | LPARE Expr . RPARE BinOp Expr
 
-    $預設  使用規則 50 以縮減 (ExprListTail)
+    RPARE  偏移，並進入狀態 97
 
 
-狀態 101
+狀態 79
 
-   41 ExprIdTail: LPARE ExprList RPARE . Expr2
+   21 Block: LBRAC VarDeclList StmtList RBRAC .
+
+    $預設  使用規則 21 以縮減 (Block)
+
+
+狀態 80
+
+   25 StmtList2: StmtList .
+
+    $預設  使用規則 25 以縮減 (StmtList2)
+
+
+狀態 81
+
+   24 StmtList: Stmt StmtList2 .
+
+    $預設  使用規則 24 以縮減 (StmtList)
+
+
+狀態 82
+
+   28 Stmt: Expr SEMI .
+
+    $預設  使用規則 28 以縮減 (Stmt)
+
+
+狀態 83
+
+   36 Expr: UnaryOp Expr .
+
+    $預設  使用規則 36 以縮減 (Expr)
+
+
+狀態 84
+
+    7 VarDecl: Type ID VarDecl2 .
+
+    $預設  使用規則 7 以縮減 (VarDecl)
+
+
+狀態 85
+
+   46 Expr: ID ASSIGN Expr .
+
+    $預設  使用規則 46 以縮減 (Expr)
+
+
+狀態 86
+
+   52 ExprListTail: Expr . ExprListTail2
+
+    COMMA  偏移，並進入狀態 98
+
+    $預設  使用規則 54 以縮減 (ExprListTail2)
+
+    ExprListTail2  進入狀態 99
+
+
+狀態 87
+
+   43 Expr: ID LPARE ExprList . RPARE
+   44     | ID LPARE ExprList . RPARE BinOp Expr
+
+    RPARE  偏移，並進入狀態 100
+
+
+狀態 88
+
+   50 ExprList: ExprListTail .
+
+    $預設  使用規則 50 以縮減 (ExprList)
+
+
+狀態 89
+
+   45 Expr: ID LCHAV Expr . RCHAV ExprArrayTail
+
+    RCHAV  偏移，並進入狀態 101
+
+
+狀態 90
+
+   42 Expr: ID BinOp Expr .
+
+    $預設  使用規則 42 以縮減 (Expr)
+
+
+狀態 91
+
+   29 Stmt: RETURN Expr SEMI .
+
+    $預設  使用規則 29 以縮減 (Stmt)
+
+
+狀態 92
+
+   32 Stmt: WHILE LPARE Expr . RPARE Stmt
+
+    RPARE  偏移，並進入狀態 102
+
+
+狀態 93
+
+   31 Stmt: IF LPARE Expr . RPARE Stmt ELSE Stmt
+
+    RPARE  偏移，並進入狀態 103
+
+
+狀態 94
+
+   34 Stmt: PRINT ID SEMI .
+
+    $預設  使用規則 34 以縮減 (Stmt)
+
+
+狀態 95
+
+   35 Stmt: READ ID SEMI .
+
+    $預設  使用規則 35 以縮減 (Stmt)
+
+
+狀態 96
+
+   38 Expr: NUM BinOp Expr .
+
+    $預設  使用規則 38 以縮減 (Expr)
+
+
+狀態 97
+
+   39 Expr: LPARE Expr RPARE .
+   40     | LPARE Expr RPARE . BinOp Expr
 
     EQUAL  偏移，並進入狀態 55
     NOTEQ  偏移，並進入狀態 56
@@ -1158,15 +1117,59 @@ BinOp (64)
     MUL    偏移，並進入狀態 66
     DIV    偏移，並進入狀態 67
 
-    $預設  使用規則 47 以縮減 (Expr2)
+    $預設  使用規則 39 以縮減 (Expr)
 
-    Expr2  進入狀態 107
-    BinOp  進入狀態 72
+    BinOp  進入狀態 104
 
 
-狀態 102
+狀態 98
 
-   42 ExprIdTail: LCHAV Expr RCHAV . ExprArrayTail
+   53 ExprListTail2: COMMA . ExprListTail
+
+    ID     偏移，並進入狀態 37
+    NUM    偏移，並進入狀態 44
+    NOT    偏移，並進入狀態 45
+    MINUS  偏移，並進入狀態 46
+    LPARE  偏移，並進入狀態 47
+
+    Expr          進入狀態 86
+    ExprListTail  進入狀態 105
+    UnaryOp       進入狀態 53
+
+
+狀態 99
+
+   52 ExprListTail: Expr ExprListTail2 .
+
+    $預設  使用規則 52 以縮減 (ExprListTail)
+
+
+狀態 100
+
+   43 Expr: ID LPARE ExprList RPARE .
+   44     | ID LPARE ExprList RPARE . BinOp Expr
+
+    EQUAL  偏移，並進入狀態 55
+    NOTEQ  偏移，並進入狀態 56
+    BIG    偏移，並進入狀態 57
+    BIGEQ  偏移，並進入狀態 58
+    SMALL  偏移，並進入狀態 59
+    SMAEQ  偏移，並進入狀態 60
+    AND    偏移，並進入狀態 61
+    OR     偏移，並進入狀態 62
+    PLUS   偏移，並進入狀態 64
+    MINUS  偏移，並進入狀態 65
+    MUL    偏移，並進入狀態 66
+    DIV    偏移，並進入狀態 67
+
+    $預設  使用規則 43 以縮減 (Expr)
+
+    BinOp  進入狀態 106
+
+
+狀態 101
+
+   45 Expr: ID LCHAV Expr RCHAV . ExprArrayTail
 
     EQUAL   偏移，並進入狀態 55
     NOTEQ   偏移，並進入狀態 56
@@ -1176,22 +1179,45 @@ BinOp (64)
     SMAEQ   偏移，並進入狀態 60
     AND     偏移，並進入狀態 61
     OR      偏移，並進入狀態 62
-    ASSIGN  偏移，並進入狀態 108
+    ASSIGN  偏移，並進入狀態 107
     PLUS    偏移，並進入狀態 64
     MINUS   偏移，並進入狀態 65
     MUL     偏移，並進入狀態 66
     DIV     偏移，並進入狀態 67
 
-    $預設  使用規則 47 以縮減 (Expr2)
+    $預設  使用規則 48 以縮減 (ExprArrayTail)
 
-    ExprArrayTail  進入狀態 109
-    Expr2          進入狀態 110
-    BinOp          進入狀態 72
+    ExprArrayTail  進入狀態 108
+    BinOp          進入狀態 109
+
+
+狀態 102
+
+   32 Stmt: WHILE LPARE Expr RPARE . Stmt
+
+    ID      偏移，並進入狀態 37
+    RETURN  偏移，並進入狀態 38
+    BREAK   偏移，並進入狀態 39
+    WHILE   偏移，並進入狀態 40
+    IF      偏移，並進入狀態 41
+    PRINT   偏移，並進入狀態 42
+    READ    偏移，並進入狀態 43
+    NUM     偏移，並進入狀態 44
+    NOT     偏移，並進入狀態 45
+    MINUS   偏移，並進入狀態 46
+    LPARE   偏移，並進入狀態 47
+    LBRAC   偏移，並進入狀態 26
+    SEMI    偏移，並進入狀態 48
+
+    Block    進入狀態 49
+    Stmt     進入狀態 110
+    Expr     進入狀態 52
+    UnaryOp  進入狀態 53
 
 
 狀態 103
 
-   32 Stmt: WHILE LPARE Expr RPARE . Stmt
+   31 Stmt: IF LPARE Expr RPARE . Stmt ELSE Stmt
 
     ID      偏移，並進入狀態 37
     RETURN  偏移，並進入狀態 38
@@ -1215,52 +1241,28 @@ BinOp (64)
 
 狀態 104
 
-   31 Stmt: IF LPARE Expr RPARE . Stmt ELSE Stmt
+   40 Expr: LPARE Expr RPARE BinOp . Expr
 
-    ID      偏移，並進入狀態 37
-    RETURN  偏移，並進入狀態 38
-    BREAK   偏移，並進入狀態 39
-    WHILE   偏移，並進入狀態 40
-    IF      偏移，並進入狀態 41
-    PRINT   偏移，並進入狀態 42
-    READ    偏移，並進入狀態 43
-    NUM     偏移，並進入狀態 44
-    NOT     偏移，並進入狀態 45
-    MINUS   偏移，並進入狀態 46
-    LPARE   偏移，並進入狀態 47
-    LBRAC   偏移，並進入狀態 26
-    SEMI    偏移，並進入狀態 48
+    ID     偏移，並進入狀態 37
+    NUM    偏移，並進入狀態 44
+    NOT    偏移，並進入狀態 45
+    MINUS  偏移，並進入狀態 46
+    LPARE  偏移，並進入狀態 47
 
-    Block    進入狀態 49
-    Stmt     進入狀態 112
-    Expr     進入狀態 52
+    Expr     進入狀態 112
     UnaryOp  進入狀態 53
 
 
 狀態 105
 
-   38 Expr: LPARE Expr RPARE Expr2 .
+   53 ExprListTail2: COMMA ExprListTail .
 
-    $預設  使用規則 38 以縮減 (Expr)
+    $預設  使用規則 53 以縮減 (ExprListTail2)
 
 
 狀態 106
 
-   51 ExprListTail2: COMMA ExprListTail .
-
-    $預設  使用規則 51 以縮減 (ExprListTail2)
-
-
-狀態 107
-
-   41 ExprIdTail: LPARE ExprList RPARE Expr2 .
-
-    $預設  使用規則 41 以縮減 (ExprIdTail)
-
-
-狀態 108
-
-   45 ExprArrayTail: ASSIGN . Expr
+   44 Expr: ID LPARE ExprList RPARE BinOp . Expr
 
     ID     偏移，並進入狀態 37
     NUM    偏移，並進入狀態 44
@@ -1272,42 +1274,84 @@ BinOp (64)
     UnaryOp  進入狀態 53
 
 
+狀態 107
+
+   49 ExprArrayTail: ASSIGN . Expr
+
+    ID     偏移，並進入狀態 37
+    NUM    偏移，並進入狀態 44
+    NOT    偏移，並進入狀態 45
+    MINUS  偏移，並進入狀態 46
+    LPARE  偏移，並進入狀態 47
+
+    Expr     進入狀態 114
+    UnaryOp  進入狀態 53
+
+
+狀態 108
+
+   45 Expr: ID LCHAV Expr RCHAV ExprArrayTail .
+
+    $預設  使用規則 45 以縮減 (Expr)
+
+
 狀態 109
 
-   42 ExprIdTail: LCHAV Expr RCHAV ExprArrayTail .
+   47 ExprArrayTail: BinOp . Expr
 
-    $預設  使用規則 42 以縮減 (ExprIdTail)
+    ID     偏移，並進入狀態 37
+    NUM    偏移，並進入狀態 44
+    NOT    偏移，並進入狀態 45
+    MINUS  偏移，並進入狀態 46
+    LPARE  偏移，並進入狀態 47
+
+    Expr     進入狀態 115
+    UnaryOp  進入狀態 53
 
 
 狀態 110
-
-   44 ExprArrayTail: Expr2 .
-
-    $預設  使用規則 44 以縮減 (ExprArrayTail)
-
-
-狀態 111
 
    32 Stmt: WHILE LPARE Expr RPARE Stmt .
 
     $預設  使用規則 32 以縮減 (Stmt)
 
 
-狀態 112
+狀態 111
 
    31 Stmt: IF LPARE Expr RPARE Stmt . ELSE Stmt
 
-    ELSE  偏移，並進入狀態 114
+    ELSE  偏移，並進入狀態 116
+
+
+狀態 112
+
+   40 Expr: LPARE Expr RPARE BinOp Expr .
+
+    $預設  使用規則 40 以縮減 (Expr)
 
 
 狀態 113
 
-   45 ExprArrayTail: ASSIGN Expr .
+   44 Expr: ID LPARE ExprList RPARE BinOp Expr .
 
-    $預設  使用規則 45 以縮減 (ExprArrayTail)
+    $預設  使用規則 44 以縮減 (Expr)
 
 
 狀態 114
+
+   49 ExprArrayTail: ASSIGN Expr .
+
+    $預設  使用規則 49 以縮減 (ExprArrayTail)
+
+
+狀態 115
+
+   47 ExprArrayTail: BinOp Expr .
+
+    $預設  使用規則 47 以縮減 (ExprArrayTail)
+
+
+狀態 116
 
    31 Stmt: IF LPARE Expr RPARE Stmt ELSE . Stmt
 
@@ -1326,12 +1370,12 @@ BinOp (64)
     SEMI    偏移，並進入狀態 48
 
     Block    進入狀態 49
-    Stmt     進入狀態 115
+    Stmt     進入狀態 117
     Expr     進入狀態 52
     UnaryOp  進入狀態 53
 
 
-狀態 115
+狀態 117
 
    31 Stmt: IF LPARE Expr RPARE Stmt ELSE Stmt .
 

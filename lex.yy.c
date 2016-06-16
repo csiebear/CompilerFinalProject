@@ -905,7 +905,7 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 46 "lexer.l"
-{yylval.int_val = atoi(yytext); return NUM;}
+{yylval.str = (char*)malloc(strlen(yytext)+1);strcpy(yylval.str, yytext);return NUM;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP

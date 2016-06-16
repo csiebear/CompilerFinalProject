@@ -1,16 +1,25 @@
 %{
 	#include <stdio.h>
 	#include <iostream>
+	#include <string.h>
+	#include <vector>
 	using namespace std;
-
+	
 	extern int yylineno;
 	extern void yyerror(const char *msg);
 	extern int yylex();
+	vector <char*> idStack;
+	vector <int> idNum;
+	int position=0;
+	int match_pos=0;
+	int temp_result=0;
+	void match(char* inputid);
+
 %}
 
 
 %union {
-	int int_val;
+//	int int_val;
 	char *str;
 }
 %token <str> ID
@@ -31,7 +40,7 @@
 %token <str> ELSE
 %token <str> PRINT
 %token <str> READ
-%token <int_val> NUM
+%token <str> NUM
 %token <str> ASSIGN
 %token <str> NOT
 %token <str> PLUS
@@ -67,9 +76,7 @@
 %type <str> StmtList2
 %type <str> Stmt
 %type <str> Expr
-%type <str> ExprIdTail
 %type <str> ExprArrayTail
-%type <str> Expr2
 %type <str> ExprList
 %type <str> ExprListTail
 %type <str> ExprListTail2
@@ -80,24 +87,31 @@
 %%
 
 Program
-	:DeclList
+	:DeclList{
+	}
 	;
 DeclList
 	:DeclList2 DeclList
 	|/*empyt*/{}
 	;
 DeclList2
-	:Type ID Decl{printf("%s\n",$2);}
+	:Type ID Decl{/*printf("Main:\n");*/}
+	;
 Decl
 	:VarDecl2
 	|FunDecl
 	;
 VarDecl
 	:Type ID VarDecl2
+	{	idStack.push_back($2);
+		idNum.push_back(0);
+		/*printf("the ID pushback in vector %s=%d\n",idStack[position],idNum[position]);*/
+		position++;
+	}
 	;
 VarDecl2
 	:SEMI
-	| LCHAV NUM RCHAV SEMI{cout<<$2<<endl;}
+	| LCHAV NUM RCHAV SEMI{}
 	;
 FunDecl
 	:LPARE ParamDeclList RPARE Block
@@ -119,6 +133,14 @@ ParamDeclListTail2
 	;
 ParamDecl
 	:Type ID ParamDecl2
+	{/*	char str[]="idMain";
+		int compare=1;
+		compare=strcmp($2,str);
+		if(compare==0)
+			printf("Main:\n");
+		else printf("%s:\n",$2);
+	*/
+	 }
 	;
 ParamDecl2
 	:LCHAV RCHAV
@@ -128,8 +150,8 @@ Block
 	:LBRAC VarDeclList StmtList RBRAC
 	;
 Type
-	:INT
-	|CHAR
+	:INT	{/*printf("%s",$$);$$=$1;printf("%s",$$);*/}
+	|CHAR	{/*printf("%s",$$);$$=$1;printf("%s",$$);*/}
 	;
 StmtList
 	:Stmt StmtList2
@@ -141,33 +163,78 @@ StmtList2
 Stmt
 	:SEMI
 	|Expr SEMI
-	|RETURN Expr SEMI
+	|RETURN Expr SEMI{
+		printf("	li $v0, 10\n	syscall\n");
+	}
 	|BREAK SEMI
 	|IF LPARE Expr RPARE Stmt ELSE Stmt
 	|WHILE LPARE Expr RPARE Stmt
 	|Block
-	|PRINT ID SEMI 
+	|PRINT ID SEMI
+	{
+		match($2);
+		int temp_num=idNum[match_pos];
+		printf("	li $v0, %d\n	move $a0,$v0\n	jal print\n",temp_num);
+	} 
 	|READ ID SEMI
+	{
+		/*printf("%s    ",$1);*/
+		/*if(strcmp($1,"print")==0) printf("print"); else printf("hihihi");*/
+		match($2);
+		printf("	li $v0,5\n	syscall\n");/*read in the user input,and store it in the $v0*/
+		printf("	move $s%d, $v0\n",match_pos);
+	}
 	;
 Expr
 	:UnaryOp Expr
-	|NUM Expr2{}
-	|LPARE Expr RPARE Expr2
-	|ID ExprIdTail
-	;
-ExprIdTail
-	:Expr2
-	|LPARE ExprList RPARE Expr2
-	|LCHAV Expr RCHAV ExprArrayTail
-	|ASSIGN Expr
+	|NUM{}	
+	|NUM BinOp Expr{
+		/*printf("%s%s%s",$1,$2,$3);*/
+	}
+	|LPARE Expr RPARE
+	|LPARE Expr RPARE BinOp Expr
+	|ID /*empty*/{}
+	|ID BinOp Expr{
+		if(strcmp($2,"+")==0){
+			match($1);
+			int i=match_pos;
+			temp_result=0;
+			temp_result=idNum[match_pos]+atoi($3);
+			printf("	add $v0, $s%d, %s\n",i,$3);
+		}else if(strcmp($2,"-")==0){
+                        match($1);
+                        int i=match_pos;
+			temp_result=0;
+                        temp_result=idNum[match_pos]-atoi($3);
+                        printf("        sub $v0, $s%d, %s\n",i,$3);
+		}else if(strcmp($2,"*")==0){
+                        match($1);
+                        int i=match_pos;
+			temp_result=0;
+                        temp_result=idNum[match_pos]*atoi($3);
+                        printf("        mul $v0, $s%d, %s\n",i,$3);
+		}else if(strcmp($2,"/")==0){
+                        match($1);
+                        int i=match_pos;
+			temp_result=0;
+                        temp_result=idNum[match_pos]/atoi($3);
+                        printf("        div $v0, $s%d, %s\n",i,$3);
+		}	
+	}
+	|ID LPARE ExprList RPARE
+	|ID LPARE ExprList RPARE BinOp Expr
+	|ID LCHAV Expr RCHAV ExprArrayTail
+	|ID ASSIGN Expr{
+		match($1);
+		int i=match_pos;
+		idNum[match_pos]=temp_result;
+		printf("	move $s%d, $v0\n",idNum[i]);
+	}
 	;
 ExprArrayTail
-	:Expr2
-	|ASSIGN Expr
-	;
-Expr2
 	:BinOp Expr
 	|/*empty*/{}
+	|ASSIGN Expr{}
 	;
 ExprList
 	:ExprListTail
@@ -185,18 +252,18 @@ UnaryOp
 	|NOT
 	;
 BinOp
-	:PLUS{cout<<"add"<<endl;}
-	|MINUS{cout<<"sub"<<endl;}
-	|MUL{cout<<"mul"<<endl;}
-	|DIV{cout<<"div"<<endl;}
-	|EQUAL{cout<<"seq"<<endl;}
-	|NOTEQ{cout<<"sne"<<endl;}
-	|SMALL{cout<<"slt"<<endl;}
-	|SMAEQ{cout<<"sle"<<endl;}
-	|BIG{cout<<"sgt"<<endl;}
-	|BIGEQ{cout<<"sge"<<endl;}
-	|AND
-	|OR
+	:PLUS{$$=$1;}
+	|MINUS{$$=$1;}
+	|MUL{$$=$1;}
+	|DIV{$$=$1;}
+	|EQUAL{$$=$1;}
+	|NOTEQ{$$=$1;}
+	|SMALL{$$=$1;}
+	|SMAEQ{$$=$1;}
+	|BIG{$$=$1;}
+	|BIGEQ{$$=$1;}
+	|AND{$$=$1;}
+	|OR{$$=$1;}
 	;
 %%
 #include <stdio.h>
@@ -204,12 +271,27 @@ BinOp
 void yyerror(const char *msg){
 	printf("Line %d:error: %s\n", yylineno, msg);
 }
+
+void match (char* inputid){
+	/*
+	printf("match1	%s",inputid);
+	printf("match2	%s",idStack[1]);
+	*/
+	for (int i=0;i<=1;i++){
+		if(strcmp(inputid,idStack[i])==0){
+			match_pos=i;
+			/*printf("the same %s,%s",inputid,idStack[i]);*/
+		}
+	}
+}
+
+
 int yywrap(){return 1;}
 
 int main(int argc,char **argv){
 	printf("	.text\n");
-	printf("	.global main\n");
-	printf("main:\n");
+	printf("	.globl Main\n");
+	printf("Main:\n");
 	return yyparse();
 }
 
