@@ -174,7 +174,7 @@ Stmt
 	{
 		match($2);
 		int temp_num=idNum[match_pos];
-		printf("	li $v0, %d\n	move $a0,$v0\n	jal print\n",temp_num);
+		printf("	move $a0,$t%d\n	li $v0,1\n	syscall\n",temp_num);
 	} 
 	|READ ID SEMI
 	{
@@ -182,7 +182,7 @@ Stmt
 		/*if(strcmp($1,"print")==0) printf("print"); else printf("hihihi");*/
 		match($2);
 		printf("	li $v0,5\n	syscall\n");/*read in the user input,and store it in the $v0*/
-		printf("	move $s%d, $v0\n",match_pos);
+		printf("	move $t%d, $v0\n",match_pos);
 	}
 	;
 Expr

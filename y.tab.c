@@ -1472,7 +1472,7 @@ yyreduce:
     {
 		match((yyvsp[-1].str));
 		int temp_num=idNum[match_pos];
-		printf("	li $v0, %d\n	move $a0,$v0\n	jal print\n",temp_num);
+		printf("	move $a0,$t%d\n	li $v0,1\n	syscall\n",temp_num);
 	}
 #line 1478 "y.tab.c" /* yacc.c:1646  */
     break;
@@ -1484,7 +1484,7 @@ yyreduce:
 		/*if(strcmp($1,"print")==0) printf("print"); else printf("hihihi");*/
 		match((yyvsp[-1].str));
 		printf("	li $v0,5\n	syscall\n");/*read in the user input,and store it in the $v0*/
-		printf("	move $s%d, $v0\n",match_pos);
+		printf("	move $t%d, $v0\n",match_pos);
 	}
 #line 1490 "y.tab.c" /* yacc.c:1646  */
     break;

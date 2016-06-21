@@ -6,11 +6,11 @@ Main:
 	move $s0, $v0
 	add $v0, $s0, 4
 	move $s4, $v0
-	li $v0, 0
-	move $a0,$v0
-	jal print
-	li $v0, 4
-	move $a0,$v0
-	jal print
+	move $a0,$0
+	li $v0,1
+	syscall
+	move $a0,$4
+	li $v0,1
+	syscall
 	li $v0, 10
 	syscall
