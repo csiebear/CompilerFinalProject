@@ -103,8 +103,8 @@ Decl
 	;
 VarDecl
 	:Type ID VarDecl2
-	{	idStack.push_back($2);
-		idNum.push_back(0);
+	{	idStack.push_back($2);/*place id into idstack*/
+		idNum.push_back(0);/*initialize as zero*/
 		/*printf("the ID pushback in vector %s=%d\n",idStack[position],idNum[position]);*/
 		position++;
 	}

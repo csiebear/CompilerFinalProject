@@ -1390,8 +1390,8 @@ yyreduce:
 
   case 8:
 #line 106 "cfgs.y" /* yacc.c:1646  */
-    {	idStack.push_back((yyvsp[-1].str));
-		idNum.push_back(0);
+    {	idStack.push_back((yyvsp[-1].str));/*place id into idstack*/
+		idNum.push_back(0);/*initialize as zero*/
 		/*printf("the ID pushback in vector %s=%d\n",idStack[position],idNum[position]);*/
 		position++;
 	}
