@@ -1517,25 +1517,25 @@ yyreduce:
 			int i=match_pos;
 			temp_result=0;
 			temp_result=idNum[match_pos]+atoi((yyvsp[0].str));
-			printf("	add $v0, $s%d, %s\n",i,(yyvsp[0].str));
+			printf("	add $v0, $t%d, %s\n",i,(yyvsp[0].str));
 		}else if(strcmp((yyvsp[-1].str),"-")==0){
                         match((yyvsp[-2].str));
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]-atoi((yyvsp[0].str));
-                        printf("        sub $v0, $s%d, %s\n",i,(yyvsp[0].str));
+                        printf("        sub $v0, $t%d, %s\n",i,(yyvsp[0].str));
 		}else if(strcmp((yyvsp[-1].str),"*")==0){
                         match((yyvsp[-2].str));
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]*atoi((yyvsp[0].str));
-                        printf("        mul $v0, $s%d, %s\n",i,(yyvsp[0].str));
+                        printf("        mul $v0, $t%d, %s\n",i,(yyvsp[0].str));
 		}else if(strcmp((yyvsp[-1].str),"/")==0){
                         match((yyvsp[-2].str));
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]/atoi((yyvsp[0].str));
-                        printf("        div $v0, $s%d, %s\n",i,(yyvsp[0].str));
+                        printf("        div $v0, $t%d, %s\n",i,(yyvsp[0].str));
 		}	
 	}
 #line 1542 "y.tab.c" /* yacc.c:1646  */
@@ -1547,7 +1547,7 @@ yyreduce:
 		match((yyvsp[-2].str));
 		int i=match_pos;
 		idNum[match_pos]=temp_result;
-		printf("	move $s%d, $v0\n",idNum[i]);
+		printf("	move $t%d, $v0\n",idNum[i]);
 	}
 #line 1553 "y.tab.c" /* yacc.c:1646  */
     break;

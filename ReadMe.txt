@@ -40,3 +40,7 @@ Now we should modify the lexer based on the terminals definition.
 The file name lexer_test2.l is used to test the lexer is correct or not.
 (flex lexer_test2.l	g++ lex.yy.c -ll	./a.out <test.c >lexerresult
 
+In the parser, I just process the simple arithmetic and the I/O(READ/PRINT).
+I use the $t0 and $t7 to store the variable, so if we declare to many variable may error(modify later).
+I arithemetic use the $v0 for store the temporary result,if assign the result will store.
+

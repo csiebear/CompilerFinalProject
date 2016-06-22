@@ -200,25 +200,25 @@ Expr
 			int i=match_pos;
 			temp_result=0;
 			temp_result=idNum[match_pos]+atoi($3);
-			printf("	add $v0, $s%d, %s\n",i,$3);
+			printf("	add $v0, $t%d, %s\n",i,$3);
 		}else if(strcmp($2,"-")==0){
                         match($1);
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]-atoi($3);
-                        printf("        sub $v0, $s%d, %s\n",i,$3);
+                        printf("        sub $v0, $t%d, %s\n",i,$3);
 		}else if(strcmp($2,"*")==0){
                         match($1);
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]*atoi($3);
-                        printf("        mul $v0, $s%d, %s\n",i,$3);
+                        printf("        mul $v0, $t%d, %s\n",i,$3);
 		}else if(strcmp($2,"/")==0){
                         match($1);
                         int i=match_pos;
 			temp_result=0;
                         temp_result=idNum[match_pos]/atoi($3);
-                        printf("        div $v0, $s%d, %s\n",i,$3);
+                        printf("        div $v0, $t%d, %s\n",i,$3);
 		}	
 	}
 	|ID LPARE ExprList RPARE
@@ -228,7 +228,7 @@ Expr
 		match($1);
 		int i=match_pos;
 		idNum[match_pos]=temp_result;
-		printf("	move $s%d, $v0\n",idNum[i]);
+		printf("	move $t%d, $v0\n",idNum[i]);
 	}
 	;
 ExprArrayTail
